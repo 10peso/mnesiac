@@ -6,6 +6,19 @@ defmodule Mnesiac do
   alias Mnesiac.StoreManager
 
   @doc """
+  Start Mnesia without strict host checking
+  """
+  def init_mnesia(nil) do
+    case Node.list() do
+      [head | _tail] ->
+        join_cluster(head)
+
+      [] ->
+        start()
+    end
+  end
+
+  @doc """
   Start Mnesia with strict host checking
   """
   def init_mnesia(nodes) do
